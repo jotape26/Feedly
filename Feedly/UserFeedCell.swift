@@ -28,7 +28,7 @@ struct UserFeedCell : View {
             }
         }
         
-        .navigationBarTitle(Text(feed.title ?? ""))
+        .navigationBarTitle(Text(feed.title))
     }
 }
 

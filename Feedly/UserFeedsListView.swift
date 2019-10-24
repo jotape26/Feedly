@@ -24,12 +24,25 @@ struct UserFeedsListView: View {
         alert.addAction(UIAlertAction(title: "Cancelar", style: .cancel, handler: nil))
         alert.addAction(UIAlertAction(title: "Adicionar", style: .default, handler: { _ in
             
+            
+            
             guard let urlString = alert.textFields?.first?.text,
-                let url = URL(string: urlString) else { return }
+            let _ = URL(string: urlString) else {
+                print("invalid url")
+                return
+            }
+            
+            guard !self.userFeeds.contains(where: { (savedFeed) -> Bool in
+                return savedFeed.urlString == urlString
+            }) else {
+                //HANDLE ERROR
+                print("duplicated feed")
+                return
+            }
             
             let f = RSSFeed()
             f.id = self.userFeeds.count + 1
-            f.url = url
+            f.urlString = urlString
 
             self.userFeeds.append(f)
         }))
@@ -47,9 +60,9 @@ struct UserFeedsListView: View {
                             .aspectRatio(contentMode: .fit)
                         
                         VStack(alignment: .leading, spacing: 10.0) {
-                            Text(feed.title ?? "")
+                            Text(feed.title)
                                 .bold()
-                            Text(feed.description ?? "")
+                            Text(feed.feedDescription)
                         }
                     }
                 }

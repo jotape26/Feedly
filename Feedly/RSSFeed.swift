@@ -8,85 +8,111 @@
 
 import SwiftUI
 import FeedKit
+import RealmSwift
 
-class UserSession {
+class UserSession: Object {
     static let instance = {
         return UserSession()
     }()
     
     fileprivate let dataFilePath = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first?.appendingPathComponent("feeds.plist")
     
-    var userFeeds : [RSSFeed] {
+    @objc dynamic var userFeeds : [RSSFeed] {
         get {
-            var feeds = [RSSFeed]()
-            if let urls = UserDefaults.standard.array(forKey: "userFeedsURLs") as? [String] {
-                for (index, url) in urls.enumerated() {
-                    if let url = URL(string: url) {
-                        let feed = RSSFeed()
-                        feed.id = index
-                        feed.url = url
-                        feeds.append(feed)
-                    }
-                }
+            let uiRealm = try! Realm()
+            let feeds = uiRealm.objects(RSSFeed.self)
+            
+            feeds.forEach { (feed) in
+                feed.downloadImage(url: URL(string: feed.imageURLString)!)
             }
-            return feeds
+            return feeds.reversed().reversed()
         }
         set {
+            let uiRealm = try! Realm()
             
-            let urls = newValue.map { (feeeed) -> String in
-                return feeeed.url.description
-            }.filter({ (url) -> Bool in
-                return url != ""
-            })
-
-            UserDefaults.standard.set(urls, forKey: "userFeedsURLs")
+            do {
+                try uiRealm.write {
+                    uiRealm.add(newValue)
+                }
+            } catch {
+                print("erro salvando")
+            }
         }
     }
 }
 
-class RSSFeed: Identifiable {
+class RSSFeed: Object, Identifiable {
 
-    var id: Int!
-    var url: URL! {
+    @objc dynamic var id = 0
+    @objc dynamic var title: String = ""
+    @objc dynamic var feedDescription = ""
+    @objc dynamic var urlString = "" {
+        didSet {
+            if let url = URL(string: urlString) {
+                self.url = url
+            }
+        }
+    }
+    
+    @objc dynamic var imageURLString = "" {
+        didSet {
+            if let url = URL(string: imageURLString) {
+                downloadImage(url: url)
+            }
+        }
+    }
+    var posts = RealmSwift.List<FeedPost>()
+    
+    override static func ignoredProperties() -> [String] {
+      return ["url"]
+    }
+    
+    func downloadImage(url : URL) {
+        Image.downloadImage(from: url) { (image) in
+            self.image = image
+        }
+    }
+    
+    @State var image : UIImage?
+    
+    @objc dynamic var url: URL! {
         didSet {
             let result = FeedParser(URL: url).parse()
             
             switch result {
             case .success(let feed):
-                self.title = feed.rssFeed?.title
-                self.description = feed.rssFeed?.description
-                if let url = feed.rssFeed?.image?.url {
-                    Image.downloadImage(from: URL(string: url)!) { (image) in
-                        self.image = image
-                    }
-                }
-
+                self.title = feed.rssFeed?.title ?? ""
+                self.feedDescription = feed.rssFeed?.description ?? ""
+                self.imageURLString = feed.rssFeed?.image?.url ?? ""
+                
                 for (index, post) in (feed.rssFeed?.items ?? []).enumerated() {
                     let p = FeedPost()
                     p.id = index
                     p.title = post.title ?? ""
-                    p.description = post.description ?? ""
+                    p.postDescription = post.description ?? ""
                     p.postDate = post.pubDate
                     p.author = post.author ?? ""
                     p.link = post.link ?? ""
                     self.posts.append(p)
                 }
             case .failure(_):
+                if let index = UserSession.instance.userFeeds.firstIndex(of: self) {
+                    UserSession.instance.userFeeds.remove(at: index)
+                    
+                    //HANDLE ERROR
+                    print("failed to download feed")
+                }
                 break
             }
         }
     }
-    var title: String?
-    var description: String?
-    var posts: [FeedPost] = []
-    var image : UIImage?
 }
 
-class FeedPost: Identifiable {
-    var id: Int = 0
-    var title: String = ""
-    var author : String = ""
-    var link : String = ""
-    var description: String = ""
-    var postDate : Date?
+class FeedPost: Object, Identifiable {
+    @objc dynamic var id: Int = 0
+    @objc dynamic var title: String = ""
+    @objc dynamic var author : String = ""
+    @objc dynamic var link : String = ""
+    @objc dynamic var postDescription: String = ""
+    @objc dynamic var postDate : Date?
 }

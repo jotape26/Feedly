@@ -7,6 +7,10 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		FA459FCF23621C0C00AF8FCB /* Realm.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FA459FCE23621C0C00AF8FCB /* Realm.framework */; };
+		FA459FD023621C0C00AF8FCB /* Realm.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = FA459FCE23621C0C00AF8FCB /* Realm.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		FA459FD223621C1900AF8FCB /* RealmSwift.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FA459FD123621C1900AF8FCB /* RealmSwift.framework */; };
+		FA459FD323621C1900AF8FCB /* RealmSwift.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = FA459FD123621C1900AF8FCB /* RealmSwift.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		FA4AD6FE235F353900E73D5C /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA4AD6FD235F353900E73D5C /* Extensions.swift */; };
 		FA5AEADB23608213007EA191 /* RSSFeed.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA5AEADA23608213007EA191 /* RSSFeed.swift */; };
 		FA5AEADD2360827A007EA191 /* UserFeedCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA5AEADC2360827A007EA191 /* UserFeedCell.swift */; };
@@ -27,7 +31,9 @@
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
+				FA459FD023621C0C00AF8FCB /* Realm.framework in Embed Frameworks */,
 				FA6FF4222359F10E0071E91E /* FeedKit.framework in Embed Frameworks */,
+				FA459FD323621C1900AF8FCB /* RealmSwift.framework in Embed Frameworks */,
 			);
 			name = "Embed Frameworks";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -35,6 +41,8 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		FA459FCE23621C0C00AF8FCB /* Realm.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Realm.framework; path = Carthage/Build/iOS/Realm.framework; sourceTree = "<group>"; };
+		FA459FD123621C1900AF8FCB /* RealmSwift.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = RealmSwift.framework; path = Carthage/Build/iOS/RealmSwift.framework; sourceTree = "<group>"; };
 		FA4AD6FD235F353900E73D5C /* Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Extensions.swift; sourceTree = "<group>"; };
 		FA5AEADA23608213007EA191 /* RSSFeed.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RSSFeed.swift; sourceTree = "<group>"; };
 		FA5AEADC2360827A007EA191 /* UserFeedCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserFeedCell.swift; sourceTree = "<group>"; };
@@ -54,7 +62,9 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				FA459FCF23621C0C00AF8FCB /* Realm.framework in Frameworks */,
 				FA6FF4212359F10E0071E91E /* FeedKit.framework in Frameworks */,
+				FA459FD223621C1900AF8FCB /* RealmSwift.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -106,6 +116,8 @@
 		FA6FF41F2359F10E0071E91E /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				FA459FD123621C1900AF8FCB /* RealmSwift.framework */,
+				FA459FCE23621C0C00AF8FCB /* Realm.framework */,
 				FA6FF4202359F10E0071E91E /* FeedKit.framework */,
 			);
 			name = Frameworks;
@@ -122,6 +134,7 @@
 				FA6FF4052359F00B0071E91E /* Frameworks */,
 				FA6FF4062359F00B0071E91E /* Resources */,
 				FA6FF4232359F10E0071E91E /* Embed Frameworks */,
+				FA459FD423621C3E00AF8FCB /* ShellScript */,
 			);
 			buildRules = (
 			);
@@ -177,6 +190,28 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		FA459FD423621C3E00AF8FCB /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"$(SRCROOT)/Carthage/Build/iOS/Realm.framework",
+				"$(SRCROOT)/Carthage/Build/iOS/RealmSwift.framework",
+			);
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "# Type a script or drag a script file from your workspace to insert its path.\n/usr/local/bin/carthage copy-frameworks\n";
+		};
+/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		FA6FF4042359F00B0071E91E /* Sources */ = {
