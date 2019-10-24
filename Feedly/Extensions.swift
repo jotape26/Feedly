@@ -36,3 +36,12 @@ extension String {
     }
 }
 
+extension Date {
+    
+    func printAsString() -> String {
+        let form = DateFormatter()
+        form.dateFormat = "E, d MMM yyyy HH:mm:ss"
+        return form.string(from: self)
+    }
+}
+

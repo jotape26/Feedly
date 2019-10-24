@@ -7,15 +7,18 @@
 //
 
 import SwiftUI
-import FeedKit
 
 struct UserFeedsListView: View {
     
-    @State var userFeeds : [RSSFeed] = []
+    @State var userFeeds : [RSSFeed] = UserSession.instance.userFeeds {
+        didSet {
+            UserSession.instance.userFeeds = userFeeds
+        }
+    }
     
     func addFeed() {
         let alert = UIAlertController(title: "Adicionar Feed", message: "Digite a URL do feed:", preferredStyle: .alert)
-
+        alert.view.tintColor = UIColor.orange
         alert.addTextField(configurationHandler: nil)
         
         alert.addAction(UIAlertAction(title: "Cancelar", style: .cancel, handler: nil))
@@ -35,33 +38,40 @@ struct UserFeedsListView: View {
     
     var body: some View {
         NavigationView {
-            
-            List(userFeeds) { feed in
+            List(userFeeds) { (feed : RSSFeed) in
                 NavigationLink(destination: UserFeedCell(feed: feed)) {
                     HStack {
-                        Image(uiImage: feed.image ?? UIImage())
-                            .frame(width: 50.0, height: 50.0, alignment: .leading)
-                            .aspectRatio(contentMode: /*@START_MENU_TOKEN@*/.fill/*@END_MENU_TOKEN@*/)
+                        Image(uiImage: feed.image ?? UIImage(named: "rss-icon")!)
+                            .resizable()
+                            .frame(width: 50.0, height: 50.0, alignment: .center)
+                            .aspectRatio(contentMode: .fit)
                         
-                        VStack(alignment: .leading) {
+                        VStack(alignment: .leading, spacing: 10.0) {
                             Text(feed.title ?? "")
+                                .bold()
                             Text(feed.description ?? "")
                         }
                     }
                 }
             }
-
+                
             .navigationBarTitle(Text("Feeds"))
-            .navigationBarItems(trailing:
+            .navigationBarItems(leading:
                 
                 Button(action: {
                     self.addFeed()
                 }) {
-                    Image(systemName: "plus")
+                    Image("profile-icon")
                         .foregroundColor(.orange)
+                },
+                                trailing: Button(action: {
+                                    self.addFeed()
+                                }) {
+                                    Image(systemName: "plus")
+                                        .foregroundColor(.orange)
                 }
             )
-        }
+        }.accentColor(.orange)
     }
 }
 
