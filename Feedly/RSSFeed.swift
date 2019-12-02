@@ -73,7 +73,7 @@ class RSSFeed: Object, Identifiable {
         }
     }
     
-    @State var image : UIImage?
+    @State var image = UIImage(named: "feed-icon")
     
     @objc dynamic var url: URL! {
         didSet {

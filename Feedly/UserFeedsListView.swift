@@ -48,24 +48,31 @@ struct UserFeedsListView: View {
         }))
         UIApplication.shared.windows.first?.rootViewController?.present(alert, animated: true)
     }
+    func delete(at offsets: IndexSet) {
+        userFeeds.remove(atOffsets: offsets)
+    }
     
     var body: some View {
         NavigationView {
-            List(userFeeds) { (feed : RSSFeed) in
-                NavigationLink(destination: UserFeedCell(feed: feed)) {
-                    HStack {
-                        Image(uiImage: feed.image ?? UIImage(named: "rss-icon")!)
-                            .resizable()
-                            .frame(width: 50.0, height: 50.0, alignment: .center)
-                            .aspectRatio(contentMode: .fit)
-                        
-                        VStack(alignment: .leading, spacing: 10.0) {
-                            Text(feed.title)
-                                .bold()
-                            Text(feed.feedDescription)
+            
+            List {
+                ForEach(userFeeds, id: \.self) { feed in
+                    NavigationLink(destination: UserFeedCell(feed: feed)) {
+                        HStack {
+                            Image(uiImage: feed.image ?? UIImage(named: "rss-icon")!)
+                                .resizable()
+                                .frame(width: 50.0, height: 50.0, alignment: .center)
+                                .aspectRatio(contentMode: .fit)
+                            
+                            VStack(alignment: .leading, spacing: 10.0) {
+                                Text(feed.title)
+                                    .bold()
+                                Text(feed.feedDescription)
+                            }
                         }
                     }
                 }
+                .onDelete(perform: delete)
             }
                 
             .navigationBarTitle(Text("Feeds"))

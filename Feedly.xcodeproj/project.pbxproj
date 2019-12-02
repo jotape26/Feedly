@@ -22,6 +22,7 @@
 		FA6FF4182359F00E0071E91E /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = FA6FF4162359F00E0071E91E /* LaunchScreen.storyboard */; };
 		FA6FF4212359F10E0071E91E /* FeedKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FA6FF4202359F10E0071E91E /* FeedKit.framework */; };
 		FA6FF4222359F10E0071E91E /* FeedKit.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = FA6FF4202359F10E0071E91E /* FeedKit.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		FAD4D847236724D100D63051 /* FeedContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAD4D846236724D100D63051 /* FeedContentView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -55,6 +56,7 @@
 		FA6FF4172359F00E0071E91E /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		FA6FF4192359F00E0071E91E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		FA6FF4202359F10E0071E91E /* FeedKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = FeedKit.framework; path = Carthage/Build/iOS/FeedKit.framework; sourceTree = "<group>"; };
+		FAD4D846236724D100D63051 /* FeedContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedContentView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -101,6 +103,7 @@
 				FA6FF4132359F00E0071E91E /* Preview Content */,
 				FA5AEADA23608213007EA191 /* RSSFeed.swift */,
 				FA5AEADC2360827A007EA191 /* UserFeedCell.swift */,
+				FAD4D846236724D100D63051 /* FeedContentView.swift */,
 			);
 			path = Feedly;
 			sourceTree = "<group>";
@@ -219,6 +222,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				FA6FF40C2359F00B0071E91E /* AppDelegate.swift in Sources */,
+				FAD4D847236724D100D63051 /* FeedContentView.swift in Sources */,
 				FA6FF40E2359F00B0071E91E /* SceneDelegate.swift in Sources */,
 				FA5AEADD2360827A007EA191 /* UserFeedCell.swift in Sources */,
 				FA6FF4102359F00B0071E91E /* UserFeedsListView.swift in Sources */,
